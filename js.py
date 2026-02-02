@@ -253,7 +253,7 @@ def show_menu():
         if choice in ['1', '2', '3']:
             return choice
         else:
-            print("Wrong choice! Please, введите 1, 2 или 3.")
+            print("Wrong choice! Please, enter 1, 2, or 3.")
 
 def main():
     """Main function with selection menu"""
