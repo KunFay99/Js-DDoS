@@ -133,7 +133,7 @@ def collect_proxies_only():
     input_file = 'socks5list.txt'
     output_file = 'socks5.txt'
     
-    print("Чтение URLs из файла...")
+    print("Reading URLs from file...")
     urls = read_urls_from_file(input_file)
     
     if not urls:
@@ -146,7 +146,7 @@ def collect_proxies_only():
     
     # Сбор прокси
     for i, url in enumerate(urls, 1):
-        print(f"Сбор прокси {i}/{len(urls)}: {url}")
+        print(f"Proxy collection {i}/{len(urls)}: {url}")
         
         if not url.startswith(('http://', 'https://')):
             url = 'https://' + url
@@ -162,43 +162,41 @@ def collect_proxies_only():
         time.sleep(random.uniform(1, 3))
     
     if not all_proxies:
-        print("Не найдено ни одного SOCKS5 прокси")
+        print("No SOCKS5 proxies found")
         return
     
-    # Убираем дубликаты
+    # Removing duplicates
     unique_proxies = list(set(all_proxies))
-    print(f"\nНайдено {len(unique_proxies)} уникальных прокси")
+    print(f"\n{len(unique_proxies)} unique proxies found")
     
-    # Сохраняем все найденные прокси
+    # We save all found proxies
     save_proxies_to_file(unique_proxies, output_file)
-    print(f"✓ Все найденные прокси сохранены в {output_file}")
+    print(f"✓ All found proxies are saved in{output_file}")
     
-    # Показываем часть списка
-    print("\nПервые 10 найденных прокси:")
+    # Showing part of the list 
+    print("\nFirst 10 found proxies:")
     for i, proxy in enumerate(unique_proxies[:10], 1):
         print(f"  {i:2d}. {proxy}")
     if len(unique_proxies) > 10:
-        print(f"  ... и еще {len(unique_proxies) - 10} прокси")
-
+        print(f" ... and {len(unique_proxies) - 10} more proxies")
 def collect_and_check_proxies():
-    """Сбор и проверка прокси"""
+    """Collecting and checking proxies"""
     input_file = 'socks5list.txt'
     output_file = 'socks5work.txt'
     
-    print("Чтение URLs из файла...")
+    print("Reading URLs from a file...")
     urls = read_urls_from_file(input_file)
     
     if not urls:
-        print("Не найдено URLs для обработки.")
-        return
-    
-    print(f"Найдено {len(urls)} URLs для обработки.")
-    
+        print("No URLs found to process.") 
+        return 
+
+    print(f"{len(urls)} URLs found to process.")
     all_proxies = []
     
-    # Этап 1: Сбор прокси
+    # Step 1: Collecting Proxies
     for i, url in enumerate(urls, 1):
-        print(f"Сбор прокси {i}/{len(urls)}: {url}")
+        print(f"Proxy collection {i}/{len(urls)}: {url}")
         
         if not url.startswith(('http://', 'https://')):
             url = 'https://' + url
@@ -206,58 +204,56 @@ def collect_and_check_proxies():
         proxies = scrape_url(url)
         
         if proxies:
-            print(f"Найдено {len(proxies)} прокси")
+            print(f"Found {len(proxies)} proxies")
             all_proxies.extend(proxies)
         else:
-            print("Прокси не найдены")
+            print("No proxies found")
         
         time.sleep(random.uniform(1, 3))
     
     if not all_proxies:
-        print("Не найдено ни одного SOCKS5 прокси")
-        return
+        print("No SOCKS5 proxies found") 
+        return 
     
-    # Убираем дубликаты
-    unique_proxies = list(set(all_proxies))
-    print(f"\nНайдено {len(unique_proxies)} уникальных прокси")
+     # Remove duplicates 
+     unique_proxies = list(set(all_proxies)) 
+     print(f"\n{len(unique_proxies)} unique proxies found")
     
-    # Этап 2: Проверка работоспособности с автоматическим сохранением
-    print("\nНачинаем проверку работоспособности прокси...")
-    print(f"Результаты будут сохраняться в реальном времени в {output_file}")
-    
+    # Step 2: Checking for functionality with automatic saving 
+    print("\nStarting the proxy functionality check...") 
+    print(f"Results will be saved in real time to {output_file}")
     working_proxies = check_proxies_parallel(unique_proxies, output_file=output_file)
     
-    # Финальная статистика
+    # Final statistics
     if working_proxies:
-        print(f"\n✓ Проверка завершена! Найдено {len(working_proxies)} рабочих SOCKS5 прокси")
-        print(f"Все результаты сохранены в {output_file}")
-        
-        print("\nИтоговый список рабочих прокси:")
+        print(f"\n✓ Test complete! {len(working_proxies)} working SOCKS5 proxies found") 
+        print(f"All results saved to {output_file}")
+        print("\nFinal list of working proxies:")
         for i, proxy in enumerate(working_proxies, 1):
             print(f"  {i:2d}. {proxy}")
     else:
-        print("✗ Не найдено рабочих SOCKS5 прокси")
-        # Создаем пустой файл с комментарием
+        print("✗ No working SOCKS5 proxies found") 
+        # Create an empty file with a comment 
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write("# Не найдено рабочих SOCKS5 прокси\n")
-            f.write(f"# Проверка выполнена: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write("# No working SOCKS5 proxies found\n") 
+            f.write(f"# Check completed: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
 
 def show_menu():
-    """Показывает меню выбора"""
-    print("\n" + "="*50)
-    print("          SOCKS5 ПРОКСИ СБОРЩИК")
-    print("="*50)
-    print("1. Только собрать прокси (без проверки)")
-    print("2. Собрать и проверить прокси на доступность")
-    print("3. Выход")
+    """Shows the selection menu""" 
+    print("\n" + "="*50) 
+    print(" SOCKS5 PROXY COLLECTOR") 
+    print("="*50) 
+    print("1. Only collect the proxy (without checking)") 
+    print("2. Collect and check the proxy for availability") 
+    print("3. Exit")
     print("="*50)
     
     while True:
-        choice = input("\nВыберите действие (1-3): ").strip()
+        choice = input("\nSelect action (1-3): ").strip()
         if choice in ['1', '2', '3']:
             return choice
         else:
-            print("Неверный выбор! Пожалуйста, введите 1, 2 или 3.")
+            print("Wrong choice! Please, введите 1, 2 или 3.")
 
 def main():
     """Основная функция с меню выбора"""
