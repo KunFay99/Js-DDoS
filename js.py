@@ -76,44 +76,44 @@ def scrape_url(url, timeout=10):
         return proxies
         
     except Exception as e:
-        print(f"Ошибка при скрапинге {url}: {e}")
+        print(f"Error while scraping {url}: {e}")
         return []
 
 def read_urls_from_file(filename):
-    """Читает URLs из файла"""
+    """Reads URLs from a file"""
     try:
         with open(filename, 'r', encoding='utf-8') as file:
             urls = [line.strip() for line in file if line.strip()]
         return urls
     except FileNotFoundError:
-        print(f"Файл {filename} не найден!")
+        print(f"File {filename} not found!")
         return []
 
 def save_proxies_to_file(proxies, filename):
-    """Сохраняет прокси в файл"""
+    """Saves the proxy to a file"""
     with open(filename, 'w', encoding='utf-8') as file:
         for proxy in sorted(set(proxies)):
             file.write(proxy + '\n')
 
 def check_proxies_parallel(proxies, max_workers=20, output_file='socks5work.txt'):
-    """Проверяет прокси в многопоточном режиме и сохраняет результаты по мере нахождения"""
+    """Checks proxies in multi-threaded mode and saves results as they are found"""
     working_proxies = []
     
-    print(f"Начинаем проверку {len(proxies)} прокси...")
+    print(f"Starting checking {len(proxies)} proxies...")
     
-    # Создаем или очищаем файл для записи
+    # Create or clear a file for writing
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("# Рабочие SOCKS5 прокси\n")
-        f.write(f"# Обновлено: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+        f.write("* Working SOCKS5 proxies")
+        f.write(f"* Updated: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     
     def proxy_callback(proxy):
-        """Callback функция для сохранения найденного прокси"""
+        """Callback function for saving the found proxy"""
         if proxy:
             working_proxies.append(proxy)
-            # Немедленно сохраняем в файл
+            # Save to file immediately
             with open(output_file, 'a', encoding='utf-8') as f:
                 f.write(proxy + '\n')
-            print(f"✓ Сохранен рабочий прокси: {proxy}")
+            print(f"✓ The working proxy has been saved.: {proxy}")
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_proxy = {
@@ -129,7 +129,7 @@ def check_proxies_parallel(proxies, max_workers=20, output_file='socks5work.txt'
     return working_proxies
 
 def collect_proxies_only():
-    """Только сбор прокси без проверки"""
+    """Only proxy collection without verification"""
     input_file = 'socks5list.txt'
     output_file = 'socks5.txt'
     
@@ -137,10 +137,10 @@ def collect_proxies_only():
     urls = read_urls_from_file(input_file)
     
     if not urls:
-        print("Не найдено URLs для обработки.")
+        print("No URLs found to process.")
         return
     
-    print(f"Найдено {len(urls)} URLs для обработки.")
+    print(f"Found {len(urls)} URLs to process.")
     
     all_proxies = []
     
@@ -154,10 +154,10 @@ def collect_proxies_only():
         proxies = scrape_url(url)
         
         if proxies:
-            print(f"Найдено {len(proxies)} прокси")
+            print(f"Found {len(proxies)} proxies")
             all_proxies.extend(proxies)
         else:
-            print("Прокси не найдены")
+            print("No proxies found")
         
         time.sleep(random.uniform(1, 3))
     
