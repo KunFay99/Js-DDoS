@@ -215,9 +215,9 @@ def collect_and_check_proxies():
         print("No SOCKS5 proxies found") 
         return 
     
-     # Remove duplicates 
-     unique_proxies = list(set(all_proxies)) 
-     print(f"\n{len(unique_proxies)} unique proxies found")
+    # Remove duplicates 
+    unique_proxies = list(set(all_proxies)) 
+    print(f"\n{len(unique_proxies)} unique proxies found")
     
     # Step 2: Checking for functionality with automatic saving 
     print("\nStarting the proxy functionality check...") 
