@@ -144,7 +144,7 @@ def collect_proxies_only():
     
     all_proxies = []
     
-    # Сбор прокси
+    # Proxy collection
     for i, url in enumerate(urls, 1):
         print(f"Proxy collection {i}/{len(urls)}: {url}")
         
@@ -256,26 +256,26 @@ def show_menu():
             print("Wrong choice! Please, введите 1, 2 или 3.")
 
 def main():
-    """Основная функция с меню выбора"""
+    """Main function with selection menu"""
     while True:
         choice = show_menu()
         
         if choice == '1':
-            print("\nЗапуск сбора прокси...")
+            print("\nStarting proxy collection...")
             collect_proxies_only()
             
         elif choice == '2':
-            print("\nЗапуск сбора и проверки прокси...")
+            print("\nStart proxy collection and verification...")
             collect_and_check_proxies()
             
         elif choice == '3':
-            print("Выход из программы.")
+            print("Exit the program.")
             break
         
-        # Спрашиваем, хочет ли пользователь продолжить
-        continue_choice = input("\nХотите выполнить другую операцию? (y/n): ").strip().lower()
-        if continue_choice not in ['y', 'yes', 'д', 'да']:
-            print("Выход из программы.")
+        # We ask if the user wants to continue
+        continue_choice = input("\nDo you want to perform another operation?? (y/n): ").strip().lower()
+        if continue_choice not in ['y', 'yes', 'd', 'yes']:
+            print("Exit the program.")
             break
 
 if __name__ == "__main__":
